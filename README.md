@@ -1,10 +1,45 @@
-- 👋 Hi, I’m Tejpreet Singh
-- 👀 I’m interested in Data Analytics But i am also Inclined towards the Software Engineering domain.(I pursue Content/Copy Writing as a hobby. :) )
-- 🌱 I’m currently learning C(Basics), Java(Fundamentals) .
-- 💞️ I’m looking to collaborate on Any kind of biggener level projects!
-- 📫 How to reach me singhtejpreet2004@gmail.com(Gmail) or singhtejpreet2004(Instagram)
+# Hi, I'm Tejpreet Singh 👋
 
-<!---
-singhtejpreet2004/singhtejpreet2004 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+### 🚀 Research Intern @ Dixon IoT Lab
+Passionate about building robust data engineering solutions for enterprise environments.
+
+---
+
+## 👨‍💻 About Me
+- 🏢 Research Intern at **Dixon IoT Lab**
+- 📊 Specializing in **Data Engineering** — expert in **Kafka** and **ETL Pipelines**
+- 🐍 Top language: **Python**
+- 🛠️ Favorite project: **Entry Exit Pipeline** (Enterprise-level solution for secure and scalable data processing)
+- 🌱 Always learning new technologies to solve real-world problems
+
+---
+
+## 🔥 Skills & Tools
+- **Data Engineering:** Kafka, ETL Pipelines, Stream Processing
+- **Programming:** Python (primary), SQL, Shell scripting
+- **Big Data:** Apache Kafka, Spark, Hadoop
+- **Cloud/DataOps:** (Add if you use AWS, Azure, GCP, Airflow, etc.)
+
+---
+
+## 🏆 Featured Project
+
+### Entry Exit Pipeline
+> Enterprise-grade pipeline designed for secure, reliable, and efficient entry/exit data processing at scale.
+- Built with Kafka, Python, and best practices in ETL design.
+- Enhanced reliability and real-time analytics for large organizations.
+
+---
+
+## 📫 Let's Connect
+
+<!-- Add your social links below! (LinkedIn, Twitter, etc.) -->
+<!-- [LinkedIn](https://www.linkedin.com/in/yourprofile) | [Twitter](https://twitter.com/yourhandle) -->
+
+---
+
+<!-- Optionally add a fun fact or hobby here! -->
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=singhtejpreet2004&show_icons=true&theme=radical" alt="Tejpreet's GitHub stats" />
+</p>
