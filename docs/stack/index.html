@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tech Stack — Tejpreet Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #667eea; --purple: #9B59B6; --dark-blue: #764ba2;
+      --bg: #0d1117; --bg2: #161b22; --border: #30363d;
+      --text: #e6edf3; --muted: #8b949e;
+      --streaming: #f78166;
+      --infra: #58a6ff;
+      --languages: #3fb950;
+      --databases: #39d353;
+      --frameworks: #9B59B6;
+      --vision: #e3b341;
+      --ml: #bc8cff;
+    }
+    html, body { width: 100%; height: 100%; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,17,23,0.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 40px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--blue); }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; font-family: 'Fira Code', monospace; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--blue); }
+
+    #graph-container {
+      position: fixed; inset: 0; top: 57px;
+    }
+
+    #legend {
+      position: fixed; bottom: 24px; left: 24px; z-index: 50;
+      background: rgba(22, 27, 34, 0.92); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px 20px;
+    }
+    .legend-title { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-family: 'Fira Code', monospace; margin-bottom: 12px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 0.75rem; color: var(--muted); }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    #hint {
+      position: fixed; bottom: 24px; right: 24px; z-index: 50;
+      background: rgba(22, 27, 34, 0.92); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px 18px;
+      font-family: 'Fira Code', monospace; font-size: 0.72rem; color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .tooltip {
+      position: fixed; z-index: 200;
+      background: rgba(22, 27, 34, 0.98); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 14px 18px; pointer-events: none;
+      display: none; min-width: 180px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .tooltip-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+    .tooltip-cat { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-family: 'Fira Code', monospace; }
+    .tooltip-exp { font-size: 0.8rem; color: var(--muted); }
+    .tooltip-exp-bar { height: 4px; border-radius: 2px; margin-top: 6px; background: var(--border); overflow: hidden; }
+    .tooltip-exp-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+
+    .page-title {
+      position: fixed; top: 73px; left: 50%; transform: translateX(-50%);
+      z-index: 50; text-align: center; padding-top: 24px; pointer-events: none;
+    }
+    .page-title h1 {
+      font-size: 1.4rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--blue), var(--dark-blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+    .page-title p { font-size: 0.75rem; color: var(--muted); font-family: 'Fira Code', monospace; }
+  </style>
+</head>
+<body>
+  <nav>
+    <span class="nav-logo">tejpreet@github:~/stack</span>
+    <div class="nav-links">
+      <a href="../">home</a>
+      <a href="../stats/">stats</a>
+      <a href="./" class="active">stack</a>
+      <a href="https://github.com/singhtejpreet2004" target="_blank">github</a>
+    </div>
+  </nav>
+
+  <div class="page-title">
+    <h1>🔬 Interactive Tech Stack</h1>
+    <p>force-directed graph — drag nodes, hover to explore</p>
+  </div>
+
+  <div id="graph-container"></div>
+
+  <div id="legend">
+    <div class="legend-title">Categories</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f78166"></div>Streaming & Data</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#58a6ff"></div>Infrastructure</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div>Languages</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#39d353"></div>Databases</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#9B59B6"></div>Frameworks</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e3b341"></div>Computer Vision</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#bc8cff"></div>ML & Analytics</div>
+  </div>
+
+  <div id="hint">
+    drag &nbsp;&nbsp;→ &nbsp;reposition nodes<br/>
+    hover &nbsp;→ &nbsp;see details<br/>
+    scroll → &nbsp;zoom<br/>
+    click &nbsp;&nbsp;→ &nbsp;highlight connections
+  </div>
+
+  <div class="tooltip" id="tooltip">
+    <div class="tooltip-name" id="tt-name"></div>
+    <div class="tooltip-cat" id="tt-cat"></div>
+    <div class="tooltip-exp" id="tt-exp"></div>
+    <div class="tooltip-exp-bar"><div class="tooltip-exp-fill" id="tt-bar"></div></div>
+  </div>
+
+  <script>
+    const COLORS = {
+      streaming: '#f78166', infra: '#58a6ff', languages: '#3fb950',
+      databases: '#39d353', frameworks: '#9B59B6', vision: '#e3b341', ml: '#bc8cff'
+    };
+
+    const nodes = [
+      // Streaming & Data (large = core)
+      { id: 'Kafka',       cat: 'streaming',  r: 32, exp: 90, note: 'confluent-kafka, schema registry, DLQ patterns' },
+      { id: 'PySpark',     cat: 'streaming',  r: 28, exp: 85, note: 'Structured Streaming, watermarking, broadcast joins' },
+      { id: 'Avro',        cat: 'streaming',  r: 16, exp: 70, note: 'Schema registry + Avro for prod topics' },
+      { id: 'Spark',       cat: 'streaming',  r: 22, exp: 80, note: 'Batch + streaming, Catalyst optimizer' },
+
+      // Infrastructure
+      { id: 'Docker',      cat: 'infra',      r: 28, exp: 88, note: 'Multi-stage builds, compose, network isolation' },
+      { id: 'Kubernetes',  cat: 'infra',      r: 26, exp: 75, note: 'Deployments, services, ConfigMaps on SLES' },
+      { id: 'Terraform',   cat: 'infra',      r: 18, exp: 65, note: 'IaC for remote infra provisioning' },
+      { id: 'Ansible',     cat: 'infra',      r: 18, exp: 70, note: 'Remote automation on SLES Linux machines' },
+      { id: 'Linux',       cat: 'infra',      r: 22, exp: 92, note: 'SLES, SSH, systemd services' },
+
+      // Languages
+      { id: 'Python',      cat: 'languages',  r: 34, exp: 95, note: 'Primary language — 3.11 via conda, type hints everywhere' },
+      { id: 'SQL',         cat: 'languages',  r: 22, exp: 88, note: 'Complex queries, window functions, CTEs' },
+      { id: 'Bash',        cat: 'languages',  r: 18, exp: 80, note: 'Cross-platform scripts for macOS + Linux' },
+      { id: 'YAML',        cat: 'languages',  r: 14, exp: 85, note: 'K8s manifests, GitHub Actions, Docker Compose' },
+
+      // Databases
+      { id: 'PostgreSQL',  cat: 'databases',  r: 26, exp: 88, note: 'QueuePool, Alembic migrations, index design' },
+      { id: 'Redis',       cat: 'databases',  r: 20, exp: 75, note: 'Caching layer, pub/sub, session store' },
+
+      // Frameworks
+      { id: 'FastAPI',     cat: 'frameworks', r: 24, exp: 85, note: 'Async endpoints, Pydantic v2, OpenAPI docs' },
+      { id: 'SQLAlchemy',  cat: 'frameworks', r: 18, exp: 82, note: 'ORM + core, async sessions, connection pooling' },
+      { id: 'Pydantic',    cat: 'frameworks', r: 16, exp: 88, note: 'V2 models, settings via BaseSettings, validators' },
+
+      // Computer Vision
+      { id: 'OpenCV',      cat: 'vision',     r: 24, exp: 85, note: 'RTSP capture, frame extraction, VideoCapture' },
+      { id: 'RTSP',        cat: 'vision',     r: 20, exp: 80, note: '30+ concurrent streams, reconnect loops, masking' },
+
+      // ML & Analytics
+      { id: 'NumPy',       cat: 'ml',         r: 18, exp: 80, note: 'Array ops, image processing pipelines' },
+      { id: 'Pandas',      cat: 'ml',         r: 16, exp: 75, note: 'Data wrangling, EDA, batch transforms' },
+      { id: 'scikit-learn',cat: 'ml',         r: 14, exp: 65, note: 'Classical ML, preprocessing, model evaluation' },
+    ];
+
+    const links = [
+      { source: 'Kafka',      target: 'PySpark' },
+      { source: 'Kafka',      target: 'Avro' },
+      { source: 'PySpark',    target: 'Spark' },
+      { source: 'PySpark',    target: 'Python' },
+      { source: 'Kafka',      target: 'Python' },
+      { source: 'Python',     target: 'FastAPI' },
+      { source: 'Python',     target: 'SQLAlchemy' },
+      { source: 'Python',     target: 'Pydantic' },
+      { source: 'Python',     target: 'OpenCV' },
+      { source: 'Python',     target: 'NumPy' },
+      { source: 'Python',     target: 'Pandas' },
+      { source: 'Python',     target: 'scikit-learn' },
+      { source: 'FastAPI',    target: 'SQLAlchemy' },
+      { source: 'FastAPI',    target: 'Pydantic' },
+      { source: 'SQLAlchemy', target: 'PostgreSQL' },
+      { source: 'PostgreSQL', target: 'Redis' },
+      { source: 'Docker',     target: 'Kubernetes' },
+      { source: 'Docker',     target: 'Kafka' },
+      { source: 'Docker',     target: 'PostgreSQL' },
+      { source: 'Kubernetes', target: 'Terraform' },
+      { source: 'Ansible',    target: 'Linux' },
+      { source: 'Linux',      target: 'Docker' },
+      { source: 'RTSP',       target: 'OpenCV' },
+      { source: 'OpenCV',     target: 'Kafka' },
+      { source: 'NumPy',      target: 'OpenCV' },
+      { source: 'Bash',       target: 'Linux' },
+      { source: 'YAML',       target: 'Docker' },
+      { source: 'YAML',       target: 'Kubernetes' },
+      { source: 'SQL',        target: 'PostgreSQL' },
+      { source: 'Pandas',     target: 'PySpark' },
+    ];
+
+    const W = window.innerWidth;
+    const H = window.innerHeight - 57;
+
+    const svg = d3.select('#graph-container')
+      .append('svg')
+      .attr('width', W).attr('height', H);
+
+    // Background gradient
+    const defs = svg.append('defs');
+    const radGrad = defs.append('radialGradient').attr('id', 'bg-grad').attr('cx','50%').attr('cy','50%').attr('r','50%');
+    radGrad.append('stop').attr('offset','0%').attr('stop-color','#161b22').attr('stop-opacity','0.5');
+    radGrad.append('stop').attr('offset','100%').attr('stop-color','#0d1117').attr('stop-opacity','0');
+    svg.append('ellipse')
+      .attr('cx', W/2).attr('cy', H/2).attr('rx', W*0.4).attr('ry', H*0.4)
+      .attr('fill','url(#bg-grad)');
+
+    // Glow filter
+    const filter = defs.append('filter').attr('id','glow');
+    filter.append('feGaussianBlur').attr('stdDeviation','4').attr('result','coloredBlur');
+    const merge = filter.append('feMerge');
+    merge.append('feMergeNode').attr('in','coloredBlur');
+    merge.append('feMergeNode').attr('in','SourceGraphic');
+
+    const g = svg.append('g');
+
+    const zoom = d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => g.attr('transform', e.transform));
+    svg.call(zoom);
+
+    const sim = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+        const s = nodes.find(n => n.id === (d.source.id || d.source));
+        const t = nodes.find(n => n.id === (d.target.id || d.target));
+        return (s ? s.r : 20) + (t ? t.r : 20) + 40;
+      }).strength(0.6))
+      .force('charge', d3.forceManyBody().strength(d => -d.r * 18))
+      .force('center', d3.forceCenter(W/2, H/2))
+      .force('collision', d3.forceCollide().radius(d => d.r + 20));
+
+    const linkEl = g.append('g')
+      .selectAll('line')
+      .data(links)
+      .join('line')
+      .attr('stroke', '#30363d')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-opacity', 0.6);
+
+    const nodeG = g.append('g')
+      .selectAll('g')
+      .data(nodes)
+      .join('g')
+      .attr('cursor', 'grab')
+      .call(d3.drag()
+        .on('start', (e, d) => { if (!e.active) sim.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+        .on('drag',  (e, d) => { d.fx = e.x; d.fy = e.y; })
+        .on('end',   (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; })
+      );
+
+    nodeG.append('circle')
+      .attr('r', d => d.r)
+      .attr('fill', d => COLORS[d.cat] + '22')
+      .attr('stroke', d => COLORS[d.cat])
+      .attr('stroke-width', 2)
+      .attr('filter', 'url(#glow)');
+
+    nodeG.append('text')
+      .text(d => d.id)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .attr('fill', d => COLORS[d.cat])
+      .attr('font-family', 'Fira Code, monospace')
+      .attr('font-size', d => Math.max(9, Math.min(13, d.r * 0.42)))
+      .attr('font-weight', '600')
+      .attr('pointer-events', 'none');
+
+    const tooltip = document.getElementById('tooltip');
+    const ttName = document.getElementById('tt-name');
+    const ttCat  = document.getElementById('tt-cat');
+    const ttExp  = document.getElementById('tt-exp');
+    const ttBar  = document.getElementById('tt-bar');
+
+    let selected = null;
+
+    nodeG
+      .on('mouseover', (e, d) => {
+        tooltip.style.display = 'block';
+        ttName.textContent = d.id;
+        ttName.style.color = COLORS[d.cat];
+        ttCat.textContent = d.cat.replace('-',' ');
+        ttCat.style.color = COLORS[d.cat];
+        ttExp.textContent = `Experience: ${d.exp}%`;
+        ttBar.style.background = COLORS[d.cat];
+        ttBar.style.width = d.exp + '%';
+
+        d3.select(e.currentTarget).select('circle')
+          .attr('stroke-width', 3)
+          .attr('fill', COLORS[d.cat] + '44');
+      })
+      .on('mousemove', e => {
+        const pad = 16;
+        let tx = e.clientX + pad, ty = e.clientY + pad;
+        if (tx + 200 > window.innerWidth) tx = e.clientX - 200 - pad;
+        if (ty + 120 > window.innerHeight) ty = e.clientY - 120 - pad;
+        tooltip.style.left = tx + 'px';
+        tooltip.style.top  = ty + 'px';
+      })
+      .on('mouseleave', (e, d) => {
+        tooltip.style.display = 'none';
+        if (selected !== d.id) {
+          d3.select(e.currentTarget).select('circle')
+            .attr('stroke-width', 2)
+            .attr('fill', COLORS[d.cat] + '22');
+        }
+      })
+      .on('click', (e, d) => {
+        e.stopPropagation();
+        selected = selected === d.id ? null : d.id;
+        const connected = new Set(links
+          .filter(l => (l.source.id||l.source) === d.id || (l.target.id||l.target) === d.id)
+          .flatMap(l => [(l.source.id||l.source), (l.target.id||l.target)]));
+
+        nodeG.each(function(n) {
+          const isConn = !selected || connected.has(n.id);
+          d3.select(this).select('circle').attr('opacity', isConn ? 1 : 0.2);
+          d3.select(this).select('text').attr('opacity', isConn ? 1 : 0.2);
+        });
+        linkEl.attr('opacity', l => {
+          if (!selected) return 0.6;
+          return connected.has(l.source.id||l.source) && connected.has(l.target.id||l.target) ? 1 : 0.08;
+        });
+      });
+
+    svg.on('click', () => {
+      selected = null;
+      nodeG.selectAll('circle').attr('opacity', 1);
+      nodeG.selectAll('text').attr('opacity', 1);
+      linkEl.attr('opacity', 0.6);
+    });
+
+    sim.on('tick', () => {
+      linkEl
+        .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+      nodeG.attr('transform', d => `translate(${d.x},${d.y})`);
+    });
+
+    window.addEventListener('resize', () => {
+      const nw = window.innerWidth, nh = window.innerHeight - 57;
+      svg.attr('width', nw).attr('height', nh);
+      sim.force('center', d3.forceCenter(nw/2, nh/2)).alpha(0.3).restart();
+    });
+  </script>
+</body>
+</html>

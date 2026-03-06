@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stats — Tejpreet Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #667eea; --purple: #9B59B6; --dark-blue: #764ba2;
+      --bg: #0d1117; --bg2: #161b22; --bg3: #1c2128;
+      --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+      --green: #3fb950; --orange: #f78166;
+    }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
+    .bg-orbs { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.1; }
+    .orb1 { width: 500px; height: 500px; background: var(--blue); top: -100px; right: -100px; }
+    .orb2 { width: 400px; height: 400px; background: var(--dark-blue); bottom: 0; left: -100px; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,17,23,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 40px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--blue); }
+    .nav-links { display: flex; gap: 20px; }
+    .nav-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; font-family: 'Fira Code', monospace; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--blue); }
+    main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+    .page-header { margin-bottom: 48px; }
+    .page-header h1 {
+      font-size: 2rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--blue), var(--dark-blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .page-header p { font-size: 0.9rem; color: var(--muted); font-family: 'Fira Code', monospace; }
+    .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+      padding: 24px 20px; transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .stat-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--dark-blue));
+      transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
+    }
+    .stat-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+    .stat-card:hover::after { transform: scaleX(1); }
+    .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-family: 'Fira Code', monospace; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--text); min-height: 2.4rem; }
+    .stat-sub { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .chart-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+    .chart-card.full { grid-column: 1 / -1; }
+    .chart-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 4px; font-family: 'Fira Code', monospace; }
+    .chart-subtitle { font-size: 0.75rem; color: var(--muted); margin-bottom: 24px; }
+    .chart-wrap { height: 240px; position: relative; }
+    .chart-wrap.tall { height: 300px; }
+    .repo-list { margin-top: 16px; }
+    .repo-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .repo-row:last-child { border-bottom: none; }
+    .repo-name { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--blue); text-decoration: none; }
+    .repo-name:hover { text-decoration: underline; }
+    .repo-meta { font-size: 0.8rem; color: var(--muted); }
+    .loading { display: flex; align-items: center; gap: 6px; height: 2.4rem; }
+    .dot { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: blink 1.2s ease-in-out infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink { 0%,100% { opacity:0.2; } 50% { opacity:1; } }
+    @media (max-width: 768px) { .stat-grid { grid-template-columns: 1fr 1fr; } .charts-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr; } nav { padding: 12px 16px; } }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div></div>
+
+  <nav>
+    <span class="nav-logo">tejpreet@github:~/stats</span>
+    <div class="nav-links">
+      <a href="../">home</a>
+      <a href="./" class="active">stats</a>
+      <a href="../stack/">stack</a>
+      <a href="https://github.com/singhtejpreet2004" target="_blank">github</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <h1>📊 Live GitHub Stats</h1>
+      <p id="last-updated">$ fetching data from api.github.com...</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Public Repos</div>
+        <div class="stat-value" id="stat-repos"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+        <div class="stat-sub">repositories</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Followers</div>
+        <div class="stat-value" id="stat-followers"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+        <div class="stat-sub">on GitHub</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Stars</div>
+        <div class="stat-value" id="stat-stars"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+        <div class="stat-sub">across repos</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Forks</div>
+        <div class="stat-value" id="stat-forks"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
+        <div class="stat-sub">across repos</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">Language Distribution</div>
+        <div class="chart-subtitle">by repo count across public repos</div>
+        <div class="chart-wrap"><canvas id="langChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Stars per Repository</div>
+        <div class="chart-subtitle">top repos by stargazers</div>
+        <div class="chart-wrap"><canvas id="starsChart"></canvas></div>
+      </div>
+      <div class="chart-card full">
+        <div class="chart-title">Contribution Activity</div>
+        <div class="chart-subtitle">daily contributions — last 52 weeks</div>
+        <div class="chart-wrap tall"><canvas id="contribChart"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Top Repositories</div>
+      <div class="chart-subtitle">ranked by stars</div>
+      <div class="repo-list" id="repo-list">
+        <div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const USERNAME = 'singhtejpreet2004';
+    const GRAD_COLORS = ['#667eea','#764ba2','#9B59B6','#3fb950','#f78166','#58a6ff','#e3b341','#f0883e','#bc8cff','#39d353'];
+
+    function animateCount(el, target) {
+      el.textContent = '0';
+      let current = 0;
+      const step = Math.max(1, Math.floor(target / 40));
+      const t = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = current.toLocaleString();
+        if (current >= target) clearInterval(t);
+      }, 30);
+    }
+
+    function buildRepoRow(repo) {
+      const row = document.createElement('div');
+      row.className = 'repo-row';
+
+      const link = document.createElement('a');
+      link.className = 'repo-name';
+      link.href = repo.html_url;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = repo.name;
+
+      const meta = document.createElement('span');
+      meta.className = 'repo-meta';
+      meta.textContent = `⭐ ${repo.stargazers_count}   🍴 ${repo.forks_count}`;
+
+      row.appendChild(link);
+      row.appendChild(meta);
+      return row;
+    }
+
+    async function loadProfile() {
+      try {
+        const res = await fetch(`https://api.github.com/users/${USERNAME}`);
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        animateCount(document.getElementById('stat-repos'), data.public_repos);
+        animateCount(document.getElementById('stat-followers'), data.followers);
+        document.getElementById('last-updated').textContent =
+          `$ last updated ${new Date().toLocaleTimeString()} — @${USERNAME}`;
+      } catch (_) {
+        document.getElementById('stat-repos').textContent = 'N/A';
+        document.getElementById('stat-followers').textContent = 'N/A';
+      }
+    }
+
+    async function loadRepos() {
+      try {
+        const res = await fetch(`https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=stars`);
+        if (!res.ok) throw new Error(res.status);
+        const repos = await res.json();
+
+        let totalStars = 0, totalForks = 0;
+        const langCounts = {};
+        repos.forEach(r => {
+          totalStars += r.stargazers_count;
+          totalForks += r.forks_count;
+          if (r.language) langCounts[r.language] = (langCounts[r.language] || 0) + 1;
+        });
+
+        animateCount(document.getElementById('stat-stars'), totalStars);
+        animateCount(document.getElementById('stat-forks'), totalForks);
+
+        const sortedLangs = Object.entries(langCounts).sort((a,b) => b[1]-a[1]).slice(0,8);
+        new Chart(document.getElementById('langChart'), {
+          type: 'doughnut',
+          data: {
+            labels: sortedLangs.map(([l]) => l),
+            datasets: [{ data: sortedLangs.map(([,c]) => c), backgroundColor: GRAD_COLORS, borderWidth: 0 }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false, cutout: '65%',
+            plugins: { legend: { position: 'right', labels: { color: '#8b949e', font: { family: 'Fira Code', size: 11 }, boxWidth: 12 } } }
+          }
+        });
+
+        const topRepos = repos.filter(r => r.stargazers_count > 0).slice(0,8);
+        new Chart(document.getElementById('starsChart'), {
+          type: 'bar',
+          data: {
+            labels: topRepos.map(r => r.name.length > 16 ? r.name.slice(0,14)+'…' : r.name),
+            datasets: [{ data: topRepos.map(r => r.stargazers_count), backgroundColor: GRAD_COLORS.map(c => c+'cc'), borderRadius: 6, borderWidth: 0 }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 11 } } },
+              y: { grid: { display: false }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 11 } } }
+            }
+          }
+        });
+
+        const repoList = document.getElementById('repo-list');
+        repoList.textContent = '';
+        repos.slice(0,8).forEach(r => repoList.appendChild(buildRepoRow(r)));
+
+      } catch (_) {
+        document.getElementById('stat-stars').textContent = 'N/A';
+        document.getElementById('stat-forks').textContent = 'N/A';
+      }
+    }
+
+    async function loadContributions() {
+      try {
+        const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`);
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        const contributions = data.contributions || [];
+        const sampled = contributions.filter((_,i) => i % 2 === 0).slice(-120);
+
+        const ctx = document.getElementById('contribChart');
+        const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(102,126,234,0.4)');
+        gradient.addColorStop(1, 'rgba(102,126,234,0)');
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: sampled.map(d => {
+              const dt = new Date(d.date);
+              return dt.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+            }),
+            datasets: [{
+              data: sampled.map(d => d.count),
+              borderColor: '#667eea', backgroundColor: gradient,
+              borderWidth: 2, fill: true, tension: 0.4,
+              pointRadius: 0, pointHoverRadius: 4,
+              pointHoverBackgroundColor: '#667eea'
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 10 }, maxTicksLimit: 12 } },
+              y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 11 } }, beginAtZero: true }
+            }
+          }
+        });
+      } catch (_) {
+        const wrap = document.getElementById('contribChart').parentElement;
+        wrap.textContent = 'Could not load contribution data.';
+        wrap.style.color = '#f78166';
+        wrap.style.fontFamily = 'Fira Code, monospace';
+        wrap.style.fontSize = '0.8rem';
+      }
+    }
+
+    loadProfile();
+    loadRepos();
+    loadContributions();
+  </script>
+</body>
+</html>

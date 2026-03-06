@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tejpreet Singh — Data Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --purple: #9B59B6;
+      --blue: #667eea;
+      --dark-blue: #764ba2;
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+    .bg-orbs {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.15;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb1 { width: 600px; height: 600px; background: var(--blue); top: -200px; left: -200px; animation-delay: 0s; }
+    .orb2 { width: 500px; height: 500px; background: var(--dark-blue); bottom: -200px; right: -200px; animation-delay: 4s; }
+    .orb3 { width: 300px; height: 300px; background: var(--purple); top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: 2s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+    .container {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 60px 20px; max-width: 900px; width: 100%;
+    }
+    .badge {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px; color: var(--blue);
+      border: 1px solid var(--blue);
+      padding: 4px 14px; border-radius: 20px;
+      margin-bottom: 28px; letter-spacing: 2px;
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 0%, var(--blue) 50%, var(--dark-blue) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-align: center; margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .subtitle {
+      font-family: 'Fira Code', monospace;
+      font-size: 1rem; color: var(--muted);
+      text-align: center; margin-bottom: 48px;
+    }
+    .subtitle span { color: var(--purple); }
+    .cards {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 24px; width: 100%; max-width: 700px;
+    }
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s ease;
+      display: flex; flex-direction: column; align-items: flex-start;
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, var(--blue), var(--dark-blue));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .card:hover::before { opacity: 0.06; }
+    .card:hover {
+      border-color: var(--blue);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+    }
+    .card-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .card-title {
+      font-size: 1.1rem; font-weight: 600;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--blue), var(--dark-blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+    .card-arrow {
+      margin-top: 20px; font-size: 0.85rem; color: var(--blue);
+      display: flex; align-items: center; gap: 6px;
+      font-family: 'Fira Code', monospace;
+    }
+    .divider {
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--dark-blue));
+      margin: 48px 0; border-radius: 2px;
+    }
+    .github-link {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 10px 24px; border-radius: 8px;
+      transition: all 0.2s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .github-link:hover { border-color: var(--blue); color: var(--text); }
+    @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+  <div class="container">
+    <div class="badge">DATA ENGINEER &nbsp;•&nbsp; PLAKSHA UNIVERSITY</div>
+    <h1>Tejpreet Singh</h1>
+    <p class="subtitle">
+      <span>~/</span>real-time-pipelines &nbsp;<span>|</span>&nbsp; kafka + pyspark + opencv
+    </p>
+
+    <div class="cards">
+      <a class="card" href="./stats/">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Live Stats Dashboard</div>
+        <p class="card-desc">Real-time GitHub contribution data, language distribution, repository analytics — all in one place.</p>
+        <div class="card-arrow">open stats/ <span>→</span></div>
+      </a>
+      <a class="card" href="./stack/">
+        <div class="card-icon">🔬</div>
+        <div class="card-title">Interactive Stack Map</div>
+        <p class="card-desc">Force-directed D3.js graph of my entire tech stack — explore how Kafka connects to Spark connects to everything else.</p>
+        <div class="card-arrow">explore stack/ <span>→</span></div>
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <a class="github-link" href="https://github.com/singhtejpreet2004" target="_blank">
+      ⬡ &nbsp; github.com/singhtejpreet2004
+    </a>
+  </div>
+</body>
+</html>
