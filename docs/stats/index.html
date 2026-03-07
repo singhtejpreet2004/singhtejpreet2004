@@ -2,305 +2,301 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Stats — Tejpreet Singh</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --blue: #667eea; --purple: #9B59B6; --dark-blue: #764ba2;
-      --bg: #0d1117; --bg2: #161b22; --bg3: #1c2128;
-      --border: #30363d; --text: #e6edf3; --muted: #8b949e;
-      --green: #3fb950; --orange: #f78166;
-    }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; overflow-x: hidden; }
-    .bg-orbs { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.1; }
-    .orb1 { width: 500px; height: 500px; background: var(--blue); top: -100px; right: -100px; }
-    .orb2 { width: 400px; height: 400px; background: var(--dark-blue); bottom: 0; left: -100px; }
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(13,17,23,0.85); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 14px 40px; display: flex; align-items: center; justify-content: space-between;
-    }
-    .nav-logo { font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--blue); }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-links a { font-size: 0.8rem; color: var(--muted); text-decoration: none; font-family: 'Fira Code', monospace; transition: color 0.2s; }
-    .nav-links a:hover, .nav-links a.active { color: var(--blue); }
-    main { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
-    .page-header { margin-bottom: 48px; }
-    .page-header h1 {
-      font-size: 2rem; font-weight: 700;
-      background: linear-gradient(135deg, var(--blue), var(--dark-blue));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 8px;
-    }
-    .page-header p { font-size: 0.9rem; color: var(--muted); font-family: 'Fira Code', monospace; }
-    .stat-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 32px; }
-    .stat-card {
-      background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
-      padding: 24px 20px; transition: all 0.3s; position: relative; overflow: hidden;
-    }
-    .stat-card::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, var(--blue), var(--dark-blue));
-      transform: scaleX(0); transition: transform 0.3s; transform-origin: left;
-    }
-    .stat-card:hover { border-color: var(--blue); transform: translateY(-2px); }
-    .stat-card:hover::after { transform: scaleX(1); }
-    .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; font-family: 'Fira Code', monospace; }
-    .stat-value { font-size: 2rem; font-weight: 700; color: var(--text); min-height: 2.4rem; }
-    .stat-sub { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
-    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-    .chart-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
-    .chart-card.full { grid-column: 1 / -1; }
-    .chart-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 4px; font-family: 'Fira Code', monospace; }
-    .chart-subtitle { font-size: 0.75rem; color: var(--muted); margin-bottom: 24px; }
-    .chart-wrap { height: 240px; position: relative; }
-    .chart-wrap.tall { height: 300px; }
-    .repo-list { margin-top: 16px; }
-    .repo-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
-    .repo-row:last-child { border-bottom: none; }
-    .repo-name { font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--blue); text-decoration: none; }
-    .repo-name:hover { text-decoration: underline; }
-    .repo-meta { font-size: 0.8rem; color: var(--muted); }
-    .loading { display: flex; align-items: center; gap: 6px; height: 2.4rem; }
-    .dot { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; animation: blink 1.2s ease-in-out infinite; }
-    .dot:nth-child(2) { animation-delay: 0.2s; }
-    .dot:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink { 0%,100% { opacity:0.2; } 50% { opacity:1; } }
-    @media (max-width: 768px) { .stat-grid { grid-template-columns: 1fr 1fr; } .charts-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr; } nav { padding: 12px 16px; } }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--teal:#1b5068;--teal-dark:#0d2433;--teal-mid:#24637d;--pink:#f5c6ff;--mint:#90e8d4;--white:#fff;--muted:#5a7a8a;--border:#d4e8f0;--text:#0d1117}
+    html{background:var(--teal)}
+    body{min-height:100vh;font-family:'Inter',sans-serif;color:var(--text);overflow-x:hidden;
+      background-color:var(--teal);
+      background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+      background-size:22px 22px}
+
+    /* NAV */
+    nav{position:sticky;top:0;z-index:100;background:white;border-bottom:2px solid var(--border);
+        padding:0 32px;height:52px;display:flex;align-items:center;justify-content:space-between;
+        box-shadow:0 2px 20px rgba(0,0,0,.15)}
+    .nav-brand{font-family:'Fira Code',monospace;font-size:.85rem;color:var(--teal);font-weight:600}
+    .nav-links{display:flex;gap:4px}
+    .nav-links a{font-family:'Fira Code',monospace;font-size:.78rem;color:var(--muted);text-decoration:none;
+                 padding:5px 12px;border-radius:6px;transition:all .2s}
+    .nav-links a:hover,.nav-links a.on{background:var(--teal);color:white}
+
+    /* MAIN */
+    main{max-width:1060px;margin:0 auto;padding:36px 24px 80px}
+
+    /* macOS Window card */
+    .win{background:white;border-radius:16px;overflow:hidden;
+         box-shadow:0 12px 40px rgba(0,0,0,.22),0 2px 8px rgba(0,0,0,.12);
+         margin-bottom:24px;animation:pop-in .5s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes pop-in{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+    .win:nth-child(1){animation-delay:.05s}
+    .win:nth-child(2){animation-delay:.15s}
+    .win:nth-child(3){animation-delay:.25s}
+    .win:nth-child(4){animation-delay:.35s}
+    .win:nth-child(5){animation-delay:.45s}
+
+    .chrome{height:40px;background:#f4f4f4;border-bottom:1px solid #e5e5e5;
+            display:flex;align-items:center;padding:0 14px;position:relative;flex-shrink:0}
+    .dots{display:flex;gap:7px}
+    .dot{width:12px;height:12px;border-radius:50%}
+    .dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+    .chrome-title{position:absolute;left:50%;transform:translateX(-50%);
+                  font-family:'Fira Code',monospace;font-size:11px;color:#888;
+                  background:#e0e0e0;padding:2px 14px;border-radius:10px}
+    .win-content{padding:28px;
+      background-image:linear-gradient(rgba(0,0,0,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.022) 1px,transparent 1px);
+      background-size:22px 22px}
+
+    /* Page header inside first window */
+    .page-hd{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
+    .page-hd h1{font-size:1.5rem;font-weight:800;color:var(--teal);margin-bottom:4px}
+    .page-hd p{font-family:'Fira Code',monospace;font-size:.78rem;color:var(--muted)}
+    .sync-badge{display:flex;align-items:center;gap:6px;background:#f0fff8;border:1px solid var(--mint);
+                border-radius:20px;padding:4px 14px;font-family:'Fira Code',monospace;font-size:.72rem;color:#00695c}
+    .sync-dot{width:7px;height:7px;border-radius:50%;background:#28c840;animation:pulse-dot 2s ease-in-out infinite}
+    @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+    /* Stat grid */
+    .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .stat-card{padding:20px 16px;border:1.5px solid var(--border);border-radius:12px;
+               background:white;transition:all .25s;position:relative;overflow:hidden}
+    .stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+                      border-radius:0 0 12px 12px;transform:scaleX(0);transition:transform .3s;transform-origin:left}
+    .stat-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(27,80,104,.15);border-color:var(--teal)}
+    .stat-card:hover::after{transform:scaleX(1)}
+    .stat-card:nth-child(odd)::after{background:var(--pink)}
+    .stat-card:nth-child(even)::after{background:var(--mint)}
+    .sc-label{font-family:'Fira Code',monospace;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+    .sc-val{font-size:2rem;font-weight:800;color:var(--teal);min-height:2.5rem;line-height:1}
+    .sc-sub{font-size:.72rem;color:var(--muted);margin-top:4px;font-family:'Fira Code',monospace}
+
+    /* Chart grid */
+    .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+    .chart-section-label{font-family:'Fira Code',monospace;font-size:.78rem;font-weight:600;
+                          color:var(--teal);margin-bottom:4px}
+    .chart-sub{font-family:'Fira Code',monospace;font-size:.7rem;color:var(--muted);margin-bottom:20px}
+    .chart-box{height:240px;position:relative}
+    .chart-box.tall{height:290px}
+
+    /* Repo list */
+    .repo-item{display:flex;align-items:center;justify-content:space-between;
+               padding:10px 0;border-bottom:1px solid var(--border)}
+    .repo-item:last-child{border:none}
+    .repo-name{font-family:'Fira Code',monospace;font-size:.85rem;color:var(--teal);
+               text-decoration:none;font-weight:500}
+    .repo-name:hover{text-decoration:underline}
+    .repo-meta{font-size:.78rem;color:var(--muted);font-family:'Fira Code',monospace}
+    .repo-lang{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+
+    /* Loading spinner */
+    .ld{display:flex;align-items:center;gap:6px;font-family:'Fira Code',monospace;font-size:.8rem;color:var(--muted)}
+    .ld-dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:ldbl 1.2s ease-in-out infinite}
+    .ld-dot:nth-child(2){animation-delay:.2s}.ld-dot:nth-child(3){animation-delay:.4s}
+    @keyframes ldbl{0%,100%{opacity:.2}50%{opacity:1}}
+
+    @media(max-width:768px){.stat-grid{grid-template-columns:1fr 1fr}.chart-grid{grid-template-columns:1fr}nav{padding:0 16px}}
+    @media(max-width:480px){.stat-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <div class="bg-orbs"><div class="orb orb1"></div><div class="orb orb2"></div></div>
 
   <nav>
-    <span class="nav-logo">tejpreet@github:~/stats</span>
+    <span class="nav-brand">tejpreet@dev:~/stats</span>
     <div class="nav-links">
       <a href="../">home</a>
-      <a href="./" class="active">stats</a>
+      <a href="./" class="on">stats</a>
       <a href="../stack/">stack</a>
-      <a href="https://github.com/singhtejpreet2004" target="_blank">github</a>
+      <a href="https://github.com/singhtejpreet2004" target="_blank">github ↗</a>
     </div>
   </nav>
 
   <main>
-    <div class="page-header">
-      <h1>📊 Live GitHub Stats</h1>
-      <p id="last-updated">$ fetching data from api.github.com...</p>
-    </div>
 
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-label">Public Repos</div>
-        <div class="stat-value" id="stat-repos"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-        <div class="stat-sub">repositories</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Followers</div>
-        <div class="stat-value" id="stat-followers"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-        <div class="stat-sub">on GitHub</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Stars</div>
-        <div class="stat-value" id="stat-stars"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-        <div class="stat-sub">across repos</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Total Forks</div>
-        <div class="stat-value" id="stat-forks"><div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>
-        <div class="stat-sub">across repos</div>
+    <!-- Header window -->
+    <div class="win">
+      <div class="chrome"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="chrome-title">git stats --live</div></div>
+      <div class="win-content">
+        <div class="page-hd">
+          <div>
+            <h1>📊 Live GitHub Stats</h1>
+            <p id="sync-label">$ syncing with api.github.com...</p>
+          </div>
+          <div class="sync-badge"><div class="sync-dot"></div><span id="sync-time">live</span></div>
+        </div>
       </div>
     </div>
 
-    <div class="charts-grid">
-      <div class="chart-card">
-        <div class="chart-title">Language Distribution</div>
-        <div class="chart-subtitle">by repo count across public repos</div>
-        <div class="chart-wrap"><canvas id="langChart"></canvas></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title">Stars per Repository</div>
-        <div class="chart-subtitle">top repos by stargazers</div>
-        <div class="chart-wrap"><canvas id="starsChart"></canvas></div>
-      </div>
-      <div class="chart-card full">
-        <div class="chart-title">Contribution Activity</div>
-        <div class="chart-subtitle">daily contributions — last 52 weeks</div>
-        <div class="chart-wrap tall"><canvas id="contribChart"></canvas></div>
+    <!-- Stat cards -->
+    <div class="win">
+      <div class="chrome"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="chrome-title">overview</div></div>
+      <div class="win-content">
+        <div class="stat-grid">
+          <div class="stat-card"><div class="sc-label">Repositories</div><div class="sc-val" id="s-repos"><div class="ld"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div></div><div class="sc-sub">public repos</div></div>
+          <div class="stat-card"><div class="sc-label">Followers</div><div class="sc-val" id="s-foll"><div class="ld"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div></div><div class="sc-sub">on GitHub</div></div>
+          <div class="stat-card"><div class="sc-label">Total Stars</div><div class="sc-val" id="s-stars"><div class="ld"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div></div><div class="sc-sub">across repos</div></div>
+          <div class="stat-card"><div class="sc-label">Total Forks</div><div class="sc-val" id="s-forks"><div class="ld"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div></div><div class="sc-sub">across repos</div></div>
+        </div>
       </div>
     </div>
 
-    <div class="chart-card">
-      <div class="chart-title">Top Repositories</div>
-      <div class="chart-subtitle">ranked by stars</div>
-      <div class="repo-list" id="repo-list">
-        <div class="loading"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <!-- Charts row -->
+    <div class="chart-grid">
+      <div class="win">
+        <div class="chrome"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="chrome-title">top languages</div></div>
+        <div class="win-content">
+          <div class="chart-section-label">Language Distribution</div>
+          <div class="chart-sub">by repo count across public repos</div>
+          <div class="chart-box"><canvas id="langChart"></canvas></div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="chrome"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="chrome-title">stars</div></div>
+        <div class="win-content">
+          <div class="chart-section-label">Stars per Repository</div>
+          <div class="chart-sub">top repos by stargazers</div>
+          <div class="chart-box"><canvas id="starsChart"></canvas></div>
+        </div>
       </div>
     </div>
+
+    <!-- Activity graph window -->
+    <div class="win">
+      <div class="chrome"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="chrome-title">contribution activity — last 52 weeks</div></div>
+      <div class="win-content">
+        <div class="chart-section-label">Contribution Timeline</div>
+        <div class="chart-sub">daily commits, PRs, and issues</div>
+        <div class="chart-box tall"><canvas id="contribChart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Repos window -->
+    <div class="win">
+      <div class="chrome"><div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><div class="chrome-title">ls repos/</div></div>
+      <div class="win-content">
+        <div class="chart-section-label">Top Repositories</div>
+        <div class="chart-sub">ranked by stars</div>
+        <div id="repo-list"><div class="ld"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div></div>
+      </div>
+    </div>
+
   </main>
 
   <script>
-    const USERNAME = 'singhtejpreet2004';
-    const GRAD_COLORS = ['#667eea','#764ba2','#9B59B6','#3fb950','#f78166','#58a6ff','#e3b341','#f0883e','#bc8cff','#39d353'];
+    const UN = 'singhtejpreet2004';
+    const COLORS = ['#f5c6ff','#90e8d4','#1b5068','#f9a8d4','#6ee7b7','#a5f3fc','#c4b5fd','#fde68a','#fca5a5','#86efac'];
 
-    function animateCount(el, target) {
+    function countUp(el, target) {
       el.textContent = '0';
-      let current = 0;
-      const step = Math.max(1, Math.floor(target / 40));
-      const t = setInterval(() => {
-        current = Math.min(current + step, target);
-        el.textContent = current.toLocaleString();
-        if (current >= target) clearInterval(t);
-      }, 30);
+      let n = 0;
+      const step = Math.max(1, Math.ceil(target / 40));
+      const t = setInterval(() => { n = Math.min(n + step, target); el.textContent = n.toLocaleString(); if (n >= target) clearInterval(t); }, 28);
     }
 
-    function buildRepoRow(repo) {
-      const row = document.createElement('div');
-      row.className = 'repo-row';
-
-      const link = document.createElement('a');
-      link.className = 'repo-name';
-      link.href = repo.html_url;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      link.textContent = repo.name;
-
+    function buildRepoItem(r) {
+      const item = document.createElement('div');
+      item.className = 'repo-item';
+      const a = document.createElement('a');
+      a.className = 'repo-name';
+      a.href = r.html_url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = r.name;
       const meta = document.createElement('span');
       meta.className = 'repo-meta';
-      meta.textContent = `⭐ ${repo.stargazers_count}   🍴 ${repo.forks_count}`;
-
-      row.appendChild(link);
-      row.appendChild(meta);
-      return row;
+      meta.textContent = `⭐ ${r.stargazers_count}   🍴 ${r.forks_count}   ${r.language || ''}`;
+      item.appendChild(a);
+      item.appendChild(meta);
+      return item;
     }
 
-    async function loadProfile() {
-      try {
-        const res = await fetch(`https://api.github.com/users/${USERNAME}`);
-        if (!res.ok) throw new Error(res.status);
-        const data = await res.json();
-        animateCount(document.getElementById('stat-repos'), data.public_repos);
-        animateCount(document.getElementById('stat-followers'), data.followers);
-        document.getElementById('last-updated').textContent =
-          `$ last updated ${new Date().toLocaleTimeString()} — @${USERNAME}`;
-      } catch (_) {
-        document.getElementById('stat-repos').textContent = 'N/A';
-        document.getElementById('stat-followers').textContent = 'N/A';
-      }
-    }
+    const CHART_BASE = {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { font: { family: 'Fira Code', size: 11 }, color: '#5a7a8a', boxWidth: 12 } } }
+    };
 
-    async function loadRepos() {
+    async function init() {
       try {
-        const res = await fetch(`https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=stars`);
-        if (!res.ok) throw new Error(res.status);
-        const repos = await res.json();
+        const [user, repos] = await Promise.all([
+          fetch(`https://api.github.com/users/${UN}`).then(r => r.json()),
+          fetch(`https://api.github.com/users/${UN}/repos?per_page=100&sort=stars`).then(r => r.json()),
+        ]);
 
-        let totalStars = 0, totalForks = 0;
-        const langCounts = {};
+        document.getElementById('sync-label').textContent = `$ @${UN} · ${user.public_repos} repos · synced at ${new Date().toLocaleTimeString()}`;
+        document.getElementById('sync-time').textContent = new Date().toLocaleTimeString();
+
+        let stars = 0, forks = 0;
+        const langs = {};
         repos.forEach(r => {
-          totalStars += r.stargazers_count;
-          totalForks += r.forks_count;
-          if (r.language) langCounts[r.language] = (langCounts[r.language] || 0) + 1;
+          stars += r.stargazers_count;
+          forks += r.forks_count;
+          if (r.language) langs[r.language] = (langs[r.language] || 0) + 1;
         });
 
-        animateCount(document.getElementById('stat-stars'), totalStars);
-        animateCount(document.getElementById('stat-forks'), totalForks);
+        countUp(document.getElementById('s-repos'), user.public_repos);
+        countUp(document.getElementById('s-foll'), user.followers);
+        countUp(document.getElementById('s-stars'), stars);
+        countUp(document.getElementById('s-forks'), forks);
 
-        const sortedLangs = Object.entries(langCounts).sort((a,b) => b[1]-a[1]).slice(0,8);
+        // Language donut
+        const sortedLangs = Object.entries(langs).sort((a,b)=>b[1]-a[1]).slice(0,8);
         new Chart(document.getElementById('langChart'), {
           type: 'doughnut',
-          data: {
-            labels: sortedLangs.map(([l]) => l),
-            datasets: [{ data: sortedLangs.map(([,c]) => c), backgroundColor: GRAD_COLORS, borderWidth: 0 }]
-          },
-          options: {
-            responsive: true, maintainAspectRatio: false, cutout: '65%',
-            plugins: { legend: { position: 'right', labels: { color: '#8b949e', font: { family: 'Fira Code', size: 11 }, boxWidth: 12 } } }
-          }
+          data: { labels: sortedLangs.map(([l])=>l), datasets:[{ data: sortedLangs.map(([,c])=>c), backgroundColor: COLORS, borderWidth: 0 }] },
+          options: { ...CHART_BASE, cutout: '62%', plugins: { legend: { position: 'right', labels: { font:{family:'Fira Code',size:10}, color:'#5a7a8a', boxWidth:10 } } } }
         });
 
-        const topRepos = repos.filter(r => r.stargazers_count > 0).slice(0,8);
+        // Stars bar
+        const topR = repos.filter(r=>r.stargazers_count>0).slice(0,7);
         new Chart(document.getElementById('starsChart'), {
           type: 'bar',
           data: {
-            labels: topRepos.map(r => r.name.length > 16 ? r.name.slice(0,14)+'…' : r.name),
-            datasets: [{ data: topRepos.map(r => r.stargazers_count), backgroundColor: GRAD_COLORS.map(c => c+'cc'), borderRadius: 6, borderWidth: 0 }]
+            labels: topR.map(r=>r.name.length>14?r.name.slice(0,12)+'…':r.name),
+            datasets: [{ data: topR.map(r=>r.stargazers_count), backgroundColor: COLORS.slice(0,7).map(c=>c+'cc'), borderRadius: 6, borderWidth: 0 }]
           },
-          options: {
-            responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 11 } } },
-              y: { grid: { display: false }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 11 } } }
-            }
-          }
+          options: { ...CHART_BASE, indexAxis:'y', plugins:{legend:{display:false}},
+            scales: { x:{grid:{color:'#f0f0f0'},ticks:{color:'#5a7a8a',font:{family:'Fira Code',size:10}}}, y:{grid:{display:false},ticks:{color:'#5a7a8a',font:{family:'Fira Code',size:10}}} } }
         });
 
-        const repoList = document.getElementById('repo-list');
-        repoList.textContent = '';
-        repos.slice(0,8).forEach(r => repoList.appendChild(buildRepoRow(r)));
+        // Repo list
+        const list = document.getElementById('repo-list');
+        list.textContent = '';
+        repos.slice(0,8).forEach(r => list.appendChild(buildRepoItem(r)));
 
-      } catch (_) {
-        document.getElementById('stat-stars').textContent = 'N/A';
-        document.getElementById('stat-forks').textContent = 'N/A';
+      } catch(e) {
+        document.getElementById('sync-label').textContent = '$ error: could not reach api.github.com';
       }
     }
 
-    async function loadContributions() {
+    async function loadContrib() {
       try {
-        const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`);
-        if (!res.ok) throw new Error(res.status);
+        const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${UN}?y=last`);
+        if (!res.ok) throw new Error();
         const data = await res.json();
-        const contributions = data.contributions || [];
-        const sampled = contributions.filter((_,i) => i % 2 === 0).slice(-120);
-
+        const days = (data.contributions || []).filter((_,i)=>i%2===0).slice(-110);
         const ctx = document.getElementById('contribChart');
-        const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 300);
-        gradient.addColorStop(0, 'rgba(102,126,234,0.4)');
-        gradient.addColorStop(1, 'rgba(102,126,234,0)');
-
+        const grad = ctx.getContext('2d').createLinearGradient(0,0,0,290);
+        grad.addColorStop(0,'rgba(144,232,212,0.5)');
+        grad.addColorStop(1,'rgba(144,232,212,0)');
         new Chart(ctx, {
           type: 'line',
           data: {
-            labels: sampled.map(d => {
-              const dt = new Date(d.date);
-              return dt.toLocaleDateString('en', { month: 'short', day: 'numeric' });
-            }),
-            datasets: [{
-              data: sampled.map(d => d.count),
-              borderColor: '#667eea', backgroundColor: gradient,
-              borderWidth: 2, fill: true, tension: 0.4,
-              pointRadius: 0, pointHoverRadius: 4,
-              pointHoverBackgroundColor: '#667eea'
-            }]
+            labels: days.map(d=>{ const dt=new Date(d.date); return dt.toLocaleDateString('en',{month:'short',day:'numeric'}); }),
+            datasets: [{ data: days.map(d=>d.count), borderColor:'#1b5068', backgroundColor: grad, borderWidth:2, fill:true, tension:.4, pointRadius:0, pointHoverRadius:5, pointHoverBackgroundColor:'#1b5068' }]
           },
-          options: {
-            responsive: true, maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 10 }, maxTicksLimit: 12 } },
-              y: { grid: { color: '#21262d' }, ticks: { color: '#8b949e', font: { family: 'Fira Code', size: 11 } }, beginAtZero: true }
-            }
-          }
+          options: { ...CHART_BASE, plugins:{legend:{display:false}},
+            scales: { x:{grid:{color:'#f5f5f5'},ticks:{color:'#5a7a8a',font:{family:'Fira Code',size:9},maxTicksLimit:12}}, y:{grid:{color:'#f5f5f5'},ticks:{color:'#5a7a8a',font:{family:'Fira Code',size:10}},beginAtZero:true} } }
         });
-      } catch (_) {
-        const wrap = document.getElementById('contribChart').parentElement;
-        wrap.textContent = 'Could not load contribution data.';
-        wrap.style.color = '#f78166';
-        wrap.style.fontFamily = 'Fira Code, monospace';
-        wrap.style.fontSize = '0.8rem';
-      }
+      } catch(_) {}
     }
 
-    loadProfile();
-    loadRepos();
-    loadContributions();
+    init();
+    loadContrib();
+    // Auto-refresh every 5 min
+    setInterval(() => { init(); loadContrib(); }, 5 * 60 * 1000);
   </script>
 </body>
 </html>

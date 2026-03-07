@@ -1,0 +1,107 @@
+<svg width="900" height="310" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse">
+      <path d="M 22 0 L 0 0 0 22" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="0.8"/>
+    </pattern>
+    <clipPath id="cw"><rect x="18" y="18" width="864" height="274" rx="16"/></clipPath>
+    <clipPath id="ct"><rect x="556" y="74" width="308" height="196" rx="10"/></clipPath>
+    <filter id="sh"><feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="rgba(0,0,0,0.32)"/></filter>
+    <style>
+      .b1{animation:si 0.45s 0.05s both}
+      .b2{animation:si 0.45s 0.18s both}
+      .b3{animation:si 0.45s 0.31s both}
+      .b4{animation:si 0.45s 0.44s both}
+      .b5{animation:si 0.45s 0.57s both}
+      .b6{animation:si 0.45s 0.70s both}
+      .cur{animation:bl 1.1s step-end infinite}
+      .t1{animation:fi 0.6s 0.8s both}
+      .t2{animation:fi 0.6s 1.0s both}
+      .t3{animation:fi 0.6s 1.2s both}
+      .t4{animation:fi 0.6s 1.4s both}
+      @keyframes si{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+      @keyframes bl{0%,49%{opacity:1}50%,100%{opacity:0}}
+      @keyframes fi{from{opacity:0}to{opacity:1}}
+    </style>
+  </defs>
+
+  <!-- BG -->
+  <rect width="900" height="310" fill="#1b5068"/>
+
+  <!-- Window -->
+  <rect x="18" y="18" width="864" height="274" rx="16" fill="white" filter="url(#sh)"/>
+  <rect x="18" y="18" width="864" height="274" fill="url(#grid)" clip-path="url(#cw)"/>
+
+  <!-- Chrome -->
+  <path d="M34,18 Q18,18 18,34 L18,60 L882,60 L882,34 Q882,18 866,18 Z" fill="#f4f4f4"/>
+  <rect x="18" y="48" width="864" height="12" fill="#f4f4f4" clip-path="url(#cw)"/>
+  <line x1="18" y1="60" x2="882" y2="60" stroke="#e5e5e5" stroke-width="1"/>
+
+  <!-- Traffic lights -->
+  <circle cx="46" cy="39" r="6.5" fill="#ff5f57"/>
+  <circle cx="66" cy="39" r="6.5" fill="#febc2e"/>
+  <circle cx="86" cy="39" r="6.5" fill="#28c840"/>
+
+  <!-- Tab -->
+  <rect x="200" y="27" width="108" height="20" rx="10" fill="#e8e8e8"/>
+  <text x="254" y="41" text-anchor="middle" font-family="'Courier New',monospace" font-size="10" fill="#777">~/tejpreet</text>
+
+  <!-- LEFT: section heading -->
+  <text x="40" y="94" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"
+        font-size="15" font-weight="700" fill="#111">$ whoami</text>
+  <rect x="40" y="99" width="64" height="3" rx="1.5" fill="#f5c6ff"/>
+
+  <!-- Bullet rows -->
+  <g class="b1">
+    <rect x="40" y="118" width="7" height="7" rx="1.5" fill="#f5c6ff"/>
+    <text x="56" y="127" font-family="'Courier New',monospace" font-size="12.5" fill="#222">Real-time stream analytics  ·  Kafka + PySpark pipelines</text>
+  </g>
+  <g class="b2">
+    <rect x="40" y="142" width="7" height="7" rx="1.5" fill="#90e8d4"/>
+    <text x="56" y="151" font-family="'Courier New',monospace" font-size="12.5" fill="#222">RTSP video analytics  ·  multi-stream ingest + ML inference</text>
+  </g>
+  <g class="b3">
+    <rect x="40" y="166" width="7" height="7" rx="1.5" fill="#f5c6ff"/>
+    <text x="56" y="175" font-family="'Courier New',monospace" font-size="12.5" fill="#222">Containerized at scale  ·  Docker + Kubernetes on Linux</text>
+  </g>
+  <g class="b4">
+    <rect x="40" y="190" width="7" height="7" rx="1.5" fill="#90e8d4"/>
+    <text x="56" y="199" font-family="'Courier New',monospace" font-size="12.5" fill="#222">Python 3.11  ·  type hints  ·  async  ·  FastAPI  ·  SQLAlchemy</text>
+  </g>
+  <g class="b5">
+    <rect x="40" y="214" width="7" height="7" rx="1.5" fill="#f5c6ff"/>
+    <text x="56" y="223" font-family="'Courier New',monospace" font-size="12.5" fill="#222">M4 Pro daily driver  ·  remote SLES Linux via SSH</text>
+  </g>
+  <g class="b6">
+    <rect x="40" y="238" width="7" height="7" rx="1.5" fill="#90e8d4"/>
+    <text x="56" y="247" font-family="'Courier New',monospace" font-size="12.5" fill="#222">Final year CS  ·  Big Data &amp; Analysis  ·  Chandigarh University</text>
+  </g>
+
+  <!-- RIGHT: mini dark terminal -->
+  <rect x="556" y="74" width="308" height="196" rx="10" fill="#0d2433" filter="url(#sh)"/>
+  <rect x="556" y="74" width="308" height="196" fill="url(#grid)" clip-path="url(#ct)"/>
+  <!-- terminal chrome -->
+  <path d="M566,74 Q556,74 556,84 L556,100 L864,100 L864,84 Q864,74 854,74 Z" fill="#122333"/>
+  <circle cx="572" cy="87" r="4" fill="#ff5f57" opacity="0.75"/>
+  <circle cx="586" cy="87" r="4" fill="#febc2e" opacity="0.75"/>
+  <circle cx="600" cy="87" r="4" fill="#28c840" opacity="0.75"/>
+  <text x="710" y="91" text-anchor="middle" font-family="monospace" font-size="9" fill="#445">pipeline.py</text>
+
+  <!-- terminal content (fade in) -->
+  <g class="t1">
+    <text x="570" y="120" font-family="'Courier New',monospace" font-size="11" fill="#90e8d4">$ python pipeline.py --streams 30</text>
+  </g>
+  <g class="t2">
+    <text x="570" y="138" font-family="'Courier New',monospace" font-size="10.5" fill="#5a7a8a">INFO  kafka consumer ready</text>
+    <text x="570" y="155" font-family="'Courier New',monospace" font-size="10.5" fill="#5a7a8a">INFO  spark session started</text>
+    <text x="570" y="172" font-family="'Courier New',monospace" font-size="10.5" fill="#f5c6ff">INFO  30 RTSP streams connected</text>
+  </g>
+  <g class="t3">
+    <text x="570" y="189" font-family="'Courier New',monospace" font-size="10.5" fill="#5a7a8a">INFO  processing  240 fps</text>
+    <text x="570" y="206" font-family="'Courier New',monospace" font-size="10.5" fill="#90e8d4">INFO  latency     12ms p99</text>
+  </g>
+  <g class="t4">
+    <text x="570" y="225" font-family="'Courier New',monospace" font-size="11" fill="#90e8d4">$ </text>
+    <rect x="584" y="213" width="2" height="14" fill="#90e8d4" class="cur"/>
+  </g>
+  <text x="570" y="256" font-family="'Courier New',monospace" font-size="9" fill="#1e3a4a">stream · ingest · process · infer</text>
+</svg>
