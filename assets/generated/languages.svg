@@ -3,9 +3,9 @@
   <text x="24" y="44" fill="#e6edf3" font-size="14" font-weight="700"
         font-family="Fira Code, monospace">🧠 Top Languages</text>
   <rect x="24" y="56" width="60" height="2" rx="1" fill="#667eea"/>
-  <rect x="24.0" y="80" width="154.0" height="12" rx="3" fill="#3572A5"/><rect x="178.0" y="80" width="88.0" height="12" rx="3" fill="#2b7489"/><rect x="266.0" y="80" width="44.0" height="12" rx="3" fill="#8b949e"/><rect x="310.0" y="80" width="22.0" height="12" rx="3" fill="#8b949e"/><rect x="332.0" y="80" width="22.0" height="12" rx="3" fill="#8b949e"/><rect x="354.0" y="80" width="22.0" height="12" rx="3" fill="#89e051"/>
-  <text x="24" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#3572A5">■</tspan> Python 44%</text>
-<text x="88" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#2b7489">■</tspan> TypeScript 25%</text>
+  <rect x="24.0" y="80" width="144.9" height="12" rx="3" fill="#3572A5"/><rect x="168.9" y="80" width="103.5" height="12" rx="3" fill="#2b7489"/><rect x="272.5" y="80" width="41.4" height="12" rx="3" fill="#8b949e"/><rect x="313.9" y="80" width="20.7" height="12" rx="3" fill="#8b949e"/><rect x="334.6" y="80" width="20.7" height="12" rx="3" fill="#8b949e"/><rect x="355.3" y="80" width="20.7" height="12" rx="3" fill="#89e051"/>
+  <text x="24" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#3572A5">■</tspan> Python 41%</text>
+<text x="88" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#2b7489">■</tspan> TypeScript 29%</text>
 <text x="152" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Jupyter Notebook 12%</text>
 <text x="216" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> TeX 6%</text>
 <text x="280" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Lua 6%</text>
