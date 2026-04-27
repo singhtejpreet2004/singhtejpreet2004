@@ -3,11 +3,11 @@
   <text x="24" y="44" fill="#e6edf3" font-size="14" font-weight="700"
         font-family="Fira Code, monospace">🧠 Top Languages</text>
   <rect x="24" y="56" width="60" height="2" rx="1" fill="#667eea"/>
-  <rect x="24.0" y="80" width="144.9" height="12" rx="3" fill="#3572A5"/><rect x="168.9" y="80" width="103.5" height="12" rx="3" fill="#2b7489"/><rect x="272.5" y="80" width="41.4" height="12" rx="3" fill="#8b949e"/><rect x="313.9" y="80" width="20.7" height="12" rx="3" fill="#8b949e"/><rect x="334.6" y="80" width="20.7" height="12" rx="3" fill="#8b949e"/><rect x="355.3" y="80" width="20.7" height="12" rx="3" fill="#89e051"/>
-  <text x="24" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#3572A5">■</tspan> Python 41%</text>
-<text x="88" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#2b7489">■</tspan> TypeScript 29%</text>
-<text x="152" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Jupyter Notebook 12%</text>
-<text x="216" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> TeX 6%</text>
-<text x="280" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Lua 6%</text>
-<text x="344" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#89e051">■</tspan> Shell 6%</text>
+  <rect x="24.0" y="80" width="136.9" height="12" rx="3" fill="#3572A5"/><rect x="160.9" y="80" width="97.8" height="12" rx="3" fill="#2b7489"/><rect x="258.7" y="80" width="39.1" height="12" rx="3" fill="#8b949e"/><rect x="297.8" y="80" width="39.1" height="12" rx="3" fill="#f1e05a"/><rect x="336.9" y="80" width="19.6" height="12" rx="3" fill="#8b949e"/><rect x="356.4" y="80" width="19.6" height="12" rx="3" fill="#8b949e"/>
+  <text x="24" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#3572A5">■</tspan> Python 39%</text>
+<text x="88" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#2b7489">■</tspan> TypeScript 28%</text>
+<text x="152" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Jupyter Notebook 11%</text>
+<text x="216" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#f1e05a">■</tspan> JavaScript 11%</text>
+<text x="280" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> TeX 6%</text>
+<text x="344" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Lua 6%</text>
 </svg>
