@@ -3,11 +3,11 @@
   <text x="24" y="44" fill="#e6edf3" font-size="14" font-weight="700"
         font-family="Fira Code, monospace">🧠 Top Languages</text>
   <rect x="24" y="56" width="60" height="2" rx="1" fill="#667eea"/>
-  <rect x="24.0" y="80" width="160.0" height="12" rx="3" fill="#3572A5"/><rect x="184.0" y="80" width="96.0" height="12" rx="3" fill="#2b7489"/><rect x="280.0" y="80" width="32.0" height="12" rx="3" fill="#8b949e"/><rect x="312.0" y="80" width="32.0" height="12" rx="3" fill="#f1e05a"/><rect x="344.0" y="80" width="16.0" height="12" rx="3" fill="#8b949e"/><rect x="360.0" y="80" width="16.0" height="12" rx="3" fill="#8b949e"/>
-  <text x="24" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#3572A5">■</tspan> Python 45%</text>
-<text x="88" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#2b7489">■</tspan> TypeScript 27%</text>
+  <rect x="24.0" y="80" width="168.3" height="12" rx="3" fill="#3572A5"/><rect x="192.3" y="80" width="91.8" height="12" rx="3" fill="#2b7489"/><rect x="284.2" y="80" width="30.6" height="12" rx="3" fill="#8b949e"/><rect x="314.8" y="80" width="30.6" height="12" rx="3" fill="#f1e05a"/><rect x="345.4" y="80" width="15.3" height="12" rx="3" fill="#8b949e"/><rect x="360.7" y="80" width="15.3" height="12" rx="3" fill="#8b949e"/>
+  <text x="24" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#3572A5">■</tspan> Python 48%</text>
+<text x="88" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#2b7489">■</tspan> TypeScript 26%</text>
 <text x="152" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Jupyter Notebook 9%</text>
 <text x="216" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#f1e05a">■</tspan> JavaScript 9%</text>
-<text x="280" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> TeX 5%</text>
-<text x="344" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Lua 5%</text>
+<text x="280" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> TeX 4%</text>
+<text x="344" y="116" fill="#8b949e" font-size="10" font-family="Fira Code, monospace"><tspan fill="#8b949e">■</tspan> Lua 4%</text>
 </svg>
